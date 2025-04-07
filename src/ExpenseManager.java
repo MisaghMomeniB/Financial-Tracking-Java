@@ -75,3 +75,21 @@ public class ExpenseManager {
             System.out.println(t);
         }
     }
+
+    static void viewSummary() {
+        double totalIncome = 0;
+        double totalExpense = 0;
+
+        for (Transaction t : transactions) {
+            if (t.type.equalsIgnoreCase("income")) {
+                totalIncome += t.amount;
+            } else if (t.type.equalsIgnoreCase("expense")) {
+                totalExpense += t.amount;
+            }
+        }
+
+        System.out.println("💰 Total Income: " + totalIncome + " Toman");
+        System.out.println("💸 Total Expense: " + totalExpense + " Toman");
+        System.out.println("📊 Balance: " + (totalIncome - totalExpense) + " Toman");
+    }
+}
