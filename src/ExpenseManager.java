@@ -64,3 +64,14 @@ public class ExpenseManager {
 
         System.out.println("✅ Transaction added.");
     }
+
+    static void viewTransactions() {
+        if (transactions.isEmpty()) {
+            System.out.println("No transactions yet.");
+            return;
+        }
+
+        for (Transaction t : transactions) {
+            System.out.println(t);
+        }
+    }
