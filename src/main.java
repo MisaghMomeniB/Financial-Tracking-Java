@@ -13,3 +13,8 @@ class Transaction {
         this.amount = amount;
         this.date = date;
     }
+
+    public String toString() {
+        return "[" + date + "] " + type.toUpperCase() + " | " + category + " | " + amount + " Toman";
+    }
+}
