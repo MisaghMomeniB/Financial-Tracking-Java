@@ -44,3 +44,23 @@ public class ExpenseManager {
             }
         }
     }
+
+    static void addTransaction() {
+        System.out.print("Type (income/expense): ");
+        String type = scanner.nextLine();
+
+        System.out.print("Category (e.g. Food, Rent, Salary): ");
+        String category = scanner.nextLine();
+
+        System.out.print("Amount: ");
+        double amount = scanner.nextDouble();
+        scanner.nextLine();
+
+        System.out.print("Date (e.g. 2025-04-07): ");
+        String date = scanner.nextLine();
+
+        Transaction t = new Transaction(type, category, amount, date);
+        transactions.add(t);
+
+        System.out.println("✅ Transaction added.");
+    }
