@@ -1,5 +1,4 @@
 import java.util.*;
-import java.io.*;
 
 class Transaction {
     String type; // "income" or "expense"
@@ -14,6 +13,7 @@ class Transaction {
         this.date = date;
     }
 
+    @Override
     public String toString() {
         return "[" + date + "] " + type.toUpperCase() + " | " + category + " | " + amount + " Toman";
     }
@@ -36,11 +36,14 @@ public class ExpenseManager {
             scanner.nextLine(); // flush
 
             switch (choice) {
-                case 1: addTransaction(); break;
-                case 2: viewTransactions(); break;
-                case 3: viewSummary(); break;
-                case 4: System.exit(0);
-                default: System.out.println("Invalid choice!");
+                case 1 -> addTransaction();
+                case 2 -> viewTransactions();
+                case 3 -> viewSummary();
+                case 4 -> {
+                    System.out.println("Exiting...");
+                    System.exit(0);
+                }
+                default -> System.out.println("Invalid choice!");
             }
         }
     }
