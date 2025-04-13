@@ -1,13 +1,12 @@
-import java.util.*; // Importing all utility classes including List, ArrayList, and Scanner
+import java.util.*;
 
 // Class representing a single transaction
 class Transaction {
-    String type; // "income" or "expense"
-    String category; // Category of the transaction (e.g., Food, Rent)
-    double amount; // Amount of the transaction
-    String date; // Date of the transaction
+    String type;
+    String category;
+    double amount;
+    String date;
 
-    // Constructor to initialize transaction details
     public Transaction(String type, String category, double amount, String date) {
         this.type = type;
         this.category = category;
@@ -15,7 +14,6 @@ class Transaction {
         this.date = date;
     }
 
-    // Method to convert a transaction to a readable string format
     @Override
     public String toString() {
         return "[" + date + "] " + type.toUpperCase() + " | " + category + " | " + amount + " Toman";
@@ -24,85 +22,149 @@ class Transaction {
 
 // Main class to manage expenses
 public class ExpenseManager {
-    static List<Transaction> transactions = new ArrayList<>(); // List to store all transactions
-    static Scanner scanner = new Scanner(System.in); // Scanner for user input
+    static List<Transaction> transactions = new ArrayList<>();
+    static Scanner scanner = new Scanner(System.in);
 
-    // Main method - program entry point
     public static void main(String[] args) {
-        while (true) { // Infinite loop to keep showing the menu until the user exits
+        while (true) {
             System.out.println("\n--- Personal Expense Manager ---");
-            System.out.println("1. Add Transaction"); // Option to add a new transaction
-            System.out.println("2. View All Transactions"); // Option to view all transactions
-            System.out.println("3. View Summary"); // Option to view summary (income/expense/balance)
-            System.out.println("4. Exit"); // Option to exit the program
+            System.out.println("1. Add Transaction");
+            System.out.println("2. View All Transactions");
+            System.out.println("3. View Summary");
+            System.out.println("4. Search Transactions");
+            System.out.println("5. Edit Transaction");
+            System.out.println("6. Delete Transaction");
+            System.out.println("7. Exit");
             System.out.print("Choose an option: ");
-            
-            int choice = scanner.nextInt(); // Read user's choice
-            scanner.nextLine(); // Flush the newline character
 
-            // Switch case based on user's input
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+
             switch (choice) {
-                case 1 -> addTransaction(); // Add a new transaction
-                case 2 -> viewTransactions(); // Show all transactions
-                case 3 -> viewSummary(); // Show financial summary
-                case 4 -> { // Exit case
+                case 1 -> addTransaction();
+                case 2 -> viewTransactions();
+                case 3 -> viewSummary();
+                case 4 -> searchTransactions();
+                case 5 -> editTransaction();
+                case 6 -> deleteTransaction();
+                case 7 -> {
                     System.out.println("Exiting...");
-                    System.exit(0); // Terminate the program
+                    System.exit(0);
                 }
-                default -> System.out.println("Invalid choice!"); // Handle invalid input
+                default -> System.out.println("Invalid choice!");
             }
         }
     }
 
-    // Method to add a transaction
     static void addTransaction() {
         System.out.print("Type (income/expense): ");
-        String type = scanner.nextLine(); // Read the transaction type
+        String type = scanner.nextLine().trim().toLowerCase();
+        if (!type.equals("income") && !type.equals("expense")) {
+            System.out.println("❌ Invalid type. Must be 'income' or 'expense'.");
+            return;
+        }
 
-        System.out.print("Category (e.g. Food, Rent, Salary): ");
-        String category = scanner.nextLine(); // Read the transaction category
+        System.out.print("Category: ");
+        String category = scanner.nextLine();
 
         System.out.print("Amount: ");
-        double amount = scanner.nextDouble(); // Read the transaction amount
-        scanner.nextLine(); // Flush the newline character
+        double amount = scanner.nextDouble();
+        scanner.nextLine();
 
-        System.out.print("Date (e.g. 2025-04-07): ");
-        String date = scanner.nextLine(); // Read the date of the transaction
+        System.out.print("Date (YYYY-MM-DD): ");
+        String date = scanner.nextLine();
 
-        Transaction t = new Transaction(type, category, amount, date); // Create new transaction object
-        transactions.add(t); // Add transaction to the list
-
-        System.out.println("✅ Transaction added."); // Confirmation message
+        transactions.add(new Transaction(type, category, amount, date));
+        System.out.println("✅ Transaction added.");
     }
 
-    // Method to display all transactions
     static void viewTransactions() {
-        if (transactions.isEmpty()) { // Check if there are no transactions
+        if (transactions.isEmpty()) {
             System.out.println("No transactions yet.");
             return;
         }
 
-        for (Transaction t : transactions) { // Loop through and print each transaction
-            System.out.println(t);
+        for (int i = 0; i < transactions.size(); i++) {
+            System.out.println((i + 1) + ". " + transactions.get(i));
         }
     }
 
-    // Method to display income, expenses, and balance
     static void viewSummary() {
-        double totalIncome = 0; // Variable to store total income
-        double totalExpense = 0; // Variable to store total expenses
-
-        for (Transaction t : transactions) { // Loop through transactions
-            if (t.type.equalsIgnoreCase("income")) { // If transaction is income
-                totalIncome += t.amount;
-            } else if (t.type.equalsIgnoreCase("expense")) { // If transaction is expense
-                totalExpense += t.amount;
-            }
+        double totalIncome = 0, totalExpense = 0;
+        for (Transaction t : transactions) {
+            if (t.type.equalsIgnoreCase("income")) totalIncome += t.amount;
+            else if (t.type.equalsIgnoreCase("expense")) totalExpense += t.amount;
         }
-
-        // Print income, expenses, and remaining balance
         System.out.println("💰 Total Income: " + totalIncome + " Toman");
         System.out.println("💸 Total Expense: " + totalExpense + " Toman");
         System.out.println("📊 Balance: " + (totalIncome - totalExpense) + " Toman");
+    }
+
+    static void searchTransactions() {
+        System.out.print("Search by (category/date): ");
+        String filter = scanner.nextLine().toLowerCase();
+
+        System.out.print("Enter value to search: ");
+        String value = scanner.nextLine().toLowerCase();
+
+        boolean found = false;
+        for (Transaction t : transactions) {
+            if ((filter.equals("category") && t.category.toLowerCase().contains(value)) ||
+                (filter.equals("date") && t.date.contains(value))) {
+                System.out.println(t);
+                found = true;
+            }
+        }
+
+        if (!found) System.out.println("🔍 No matching transactions found.");
+    }
+
+    static void editTransaction() {
+        viewTransactions();
+        System.out.print("Enter transaction number to edit: ");
+        int index = scanner.nextInt() - 1;
+        scanner.nextLine();
+
+        if (index < 0 || index >= transactions.size()) {
+            System.out.println("❌ Invalid index.");
+            return;
+        }
+
+        Transaction t = transactions.get(index);
+        System.out.println("Editing: " + t);
+
+        System.out.print("New type (leave blank to keep '" + t.type + "'): ");
+        String newType = scanner.nextLine().trim();
+        if (!newType.isEmpty()) t.type = newType;
+
+        System.out.print("New category (leave blank to keep '" + t.category + "'): ");
+        String newCategory = scanner.nextLine().trim();
+        if (!newCategory.isEmpty()) t.category = newCategory;
+
+        System.out.print("New amount (or -1 to keep " + t.amount + "): ");
+        double newAmount = scanner.nextDouble();
+        scanner.nextLine();
+        if (newAmount >= 0) t.amount = newAmount;
+
+        System.out.print("New date (leave blank to keep '" + t.date + "'): ");
+        String newDate = scanner.nextLine().trim();
+        if (!newDate.isEmpty()) t.date = newDate;
+
+        System.out.println("✅ Transaction updated.");
+    }
+
+    static void deleteTransaction() {
+        viewTransactions();
+        System.out.print("Enter transaction number to delete: ");
+        int index = scanner.nextInt() - 1;
+        scanner.nextLine();
+
+        if (index < 0 || index >= transactions.size()) {
+            System.out.println("❌ Invalid index.");
+            return;
+        }
+
+        transactions.remove(index);
+        System.out.println("🗑️ Transaction deleted.");
     }
 }
