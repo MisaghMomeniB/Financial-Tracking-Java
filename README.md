@@ -1,81 +1,130 @@
-# 💰 Personal Expense Manager
+# 💰 Financial Tracking (Java)
 
-A simple Java application to track your income and expenses, helping you manage your personal finances effectively.
+A Java console and Swing-based **personal finance tracker** for managing incomes, expenses, and viewing financial summaries. Designed for simple financial monitoring and improvement.
 
-## 🚀 Features
+---
 
-- ➕ Add transactions (income/expense) with categories
-- 📜 View all transactions in a clean list
-- 📊 See financial summary (total income, expenses, and balance)
-- 📅 Track transactions by date
-- 💾 In-memory storage (transactions persist during current session)
+## 📋 Table of Contents
 
-## 🛠️ How It Works
+1. [Overview](#overview)  
+2. [Features](#features)  
+3. [Tech Stack & Dependencies](#tech-stack--dependencies)  
+4. [Database & Structure](#database--structure)  
+5. [Installation & Setup](#installation--setup)  
+6. [Usage](#usage)  
+7. [Code Structure](#code-structure)  
+8. [Future Enhancements](#future-enhancements)  
+9. [Contributing](#contributing)  
+10. [License](#license)
 
-### 🔧 Prerequisites
-- Java JDK 8 or later
-- Basic terminal knowledge
+---
 
-### ⬇️ Installation
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/yourusername/personal-expense-manager.git
-   ```
-2. Navigate to the project directory:
-   ```bash
-   cd personal-expense-manager
-   ```
-3. Compile the Java file:
-   ```bash
-   javac ExpenseManager.java
-   ```
+## 💡 Overview
 
-### ▶️ Running the Application
+This application allows users to track and categorize financial transactions—both income and expenses—in an intuitive, lightweight Java program. It’s perfect for learning GUI application structure, persistence mechanisms, and basic financial metrics. :contentReference[oaicite:1]{index=1}
+
+---
+
+## ✅ Features
+
+- 🧮 Add, edit, and delete **incomes** and **expenses**  
+- 📊 View **dashboard summary**: total balance, total income, total expense  
+- 💾 Persistent storage using **H2 embedded database** or local file  
+- 📑 Option to **generate reports** in CSV or plain-text format  
+- 🏦 **Categorize transactions** (e.g., food, rent, salary)  
+- 🧮 **Built-in calculator** for quick calculations
+
+---
+
+## 🛠️ Tech Stack & Dependencies
+
+- 🟩 **Java 8+** (Swing UI for GUI components)  
+- 💾 **H2 Database** for embedded persistence  
+- 🔐 **JBCrypt** (optional) for password hashing  
+- 🧩 CSV export capability via Java I/O
+
+---
+
+## 🗂️ Database & Structure
+
+The embedded H2 database (or local file) uses tables such as:
+
+- `USER_ACCOUNT` – stores login credentials  
+- `INCOME` – amount, date, description, category  
+- `EXPENSE` – amount, date, description, category  
+- `CATEGORY` – list of expense/income categories  
+- `TRANSACTION` (optional unified table)  
+
+Transactions are loaded at runtime and saved automatically on add/edit/delete.
+
+---
+
+## ⚙️ Installation & Setup
+
 ```bash
-java ExpenseManager
+git clone https://github.com/MisaghMomeniB/Financial-Tracking-Java.git
+cd Financial-Tracking-Java
+````
+
+To compile and run:
+
+```bash
+javac -cp lib/* -d bin src/com/financetracker/*.java
+java -cp "bin:lib/*" com.financetracker.MainApp
 ```
 
-## 🖥️ Usage
-1. **Main Menu**:
-   ```
-   --- Personal Expense Manager ---
-   1. Add Transaction
-   2. View All Transactions
-   3. View Summary
-   4. Exit
-   ```
+*(On Windows replace `:` with `;` in classpath.)*
 
-2. **Adding a Transaction**:
-   - Choose type (`income` or `expense`)
-   - Enter a category (e.g., Food, Rent, Salary)
-   - Input the amount
-   - Add the date in `YYYY-MM-DD` format
+---
 
-3. **Viewing Transactions**:
-   - See all transactions displayed with:
-     - Date
-     - Type (INCOME/EXPENSE)
-     - Category
-     - Amount
+## 🚀 Usage
 
-4. **Viewing Summary**:
-   - Shows:
-     - 💰 Total Income
-     - 💸 Total Expenses
-     - 📊 Current Balance
+* **Login/Register** on startup
+* Use GUI forms or console prompts to **add/edit/delete** transactions
+* View **dashboard summary** of balance, income, and expenses
+* Export transaction data to **CSV** or generate reports
 
-## 📝 Example Transaction
+---
+
+## 📁 Code Structure
+
 ```
-[2025-04-07] INCOME | Salary | 5000000 Toman
-[2025-04-07] EXPENSE | Food | 150000 Toman
+Financial-Tracking-Java/
+├── src/
+│   └── com/financetracker/
+│       ├── model/       # Entity classes (Transaction, User)
+│       ├── dao/         # Data access objects (DB logic)
+│       ├── ui/          # GUI (Swing) and Console classes
+│       └── MainApp.java # App entrypoint
+├── lib/                 # External JARs (H2, JBCrypt)
+├── bin/                 # Compiled .class files
+└── README.md            # This file
 ```
 
-## 📈 Future Enhancements
-- 🔄 Persistent storage (save to file/database)
-- 📆 Monthly/yearly reports
-- 📊 Graphical charts for visualization
-- 🔍 Filtering/sorting transactions
-- 🏷️ Custom category management
+---
+
+## ⚠️ Future Enhancements
+
+* 🛡️ Add **user authentication & encryption**
+* 📱 Extend UI to **JavaFX or Swing UI improvements**
+* 📈 Include **visual charts** (e.g., JavaFX, JFreeChart)
+* ☁️ Export data to **PDF**, Excel, or integrate cloud sync
+* 🔄 Batch import/export of transactions
+* 🧪 Add **unit tests** (JUnit) and error validation
+
+---
 
 ## 🤝 Contributing
-Pull requests are welcome! For major changes, please open an issue first to discuss what you'd like to change.
+
+All contributions welcome! Please:
+
+1. Fork the repo
+2. Create a feature branch (`feature/...`)
+3. Commit changes with clear messages
+4. Submit a Pull Request explaining your additions
+
+---
+
+## 📄 License
+
+This project is licensed under the **MIT License** — see [LICENSE](LICENSE) for details.
